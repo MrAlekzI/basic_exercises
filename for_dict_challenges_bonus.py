@@ -37,6 +37,7 @@ import datetime
 import lorem
 
 
+
 def generate_chat_history():
     messages_amount = random.randint(200, 1000)
     users_ids = list(

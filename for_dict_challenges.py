@@ -12,8 +12,15 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Петя'},
 ]
-# ???
-
+first_name_dict = {}
+for person in students:
+    if person['first_name'] in first_name_dict:
+       first_name_dict[person['first_name']] +=1
+    else:
+       first_name_dict[person['first_name']] = 1 
+    
+for k,v in first_name_dict.items():
+       print(f'{k}: {v}')
 
 # Задание 2
 # Дан список учеников, нужно вывести самое часто повторящееся имя
@@ -26,8 +33,21 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Оля'},
 ]
-# ???
 
+def name_counter(students):
+    name_dict = {}
+    for person in students:
+        if person['first_name'] in name_dict:
+            name_dict[person['first_name']] +=1
+        else:
+            name_dict[person['first_name']] = 1
+    maximal = max(name_dict.values()) #чтобы не связываться с сортирокой словаря
+    for (k, v) in name_dict.items():
+        if v == maximal:
+            print(k, end=' ') #печать а не return на случай если несколько имен с одинаковой встерчаемостьб, и чтобы не формирововать лишний раз список
+    print('\n') #возвращаем каретку в начало
+print('Самое чаcтое имя: ', end='')
+name_counter(students) 
 
 # Задание 3
 # Есть список учеников в нескольких классах, нужно вывести самое частое имя в каждом классе.
@@ -51,7 +71,10 @@ school_students = [
         {'first_name': 'Саша'},
     ],
 ]
-# ???
+for i in range(len(school_students)):
+    print (f'Самое распространненое имя в классе {i+1}: ', end='' )
+    name_counter(school_students[i]) #использовал функцию из задачи 2
+
 
 
 # Задание 4
@@ -72,7 +95,18 @@ is_male = {
     'Миша': True,
     'Даша': False,
 }
-# ???
+
+def gender_count(pupil):
+    m, f = 0, 0
+    for person in pupil:
+        if is_male.get(person['first_name']):
+            m+=1
+        else:
+            f+=1
+    return (m,f) #здесь пробую кортеж чтобы не делать дополнительный словарь каждый раз
+
+for clas in school:
+    print(f'Класс {clas["class"]}: девочки {gender_count(clas["students"])[1]}, мальчики {gender_count(clas["students"])[0]}')
 
 
 # Задание 5
@@ -91,5 +125,13 @@ is_male = {
     'Олег': True,
     'Миша': True,
 }
-# ???
+
+count_dict = {}
+for clas in school:
+    count_dict[clas['class']] = gender_count(clas["students"])
+#здесь пожалуй воспользуюсь сортировкой
+boys = sorted(count_dict.items(), key=lambda item: item[1][0])[-1][0]
+girls = sorted(count_dict.items(), key=lambda item: item[1][1])[-1][0]
+print(f'Больше всего мальчиков в классе {boys} \nБольше всего девочек в классе {girls}')
+
 
