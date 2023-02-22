@@ -34,7 +34,7 @@ import random
 import uuid
 import datetime
 
-#import lorem
+import lorem
 
 
 
@@ -62,7 +62,7 @@ def generate_chat_history():
             ),
             "seen_by": random.sample(users_ids,
                                      random.randint(1, len(users_ids))),
-            "text": 'some text' #lorem.sentence(),
+            "text": lorem.sentence(),
         })
     return messages
 
