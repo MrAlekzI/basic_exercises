@@ -55,7 +55,7 @@ def user_request_const(update, context):
 def user_request_moon(update, context):
     user_text = update.message.text.split()
     print(user_text)
-    if len(user_text) == 2:
+    if len(user_text) >= 2:
       user_date = user_text[2]
     elif len(user_text) == 1:
       user_date = datetime.now().strftime('%d/%m/%y')

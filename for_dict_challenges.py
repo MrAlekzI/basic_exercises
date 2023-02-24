@@ -97,16 +97,16 @@ is_male = {
 }
 
 def gender_count(pupil):
-    m, f = 0, 0
+    genders = {'male':0, 'female':0}
     for person in pupil:
         if is_male.get(person['first_name']):
-            m+=1
+            genders['male'] += 1
         else:
-            f+=1
-    return (m,f) #здесь пробую кортеж чтобы не делать дополнительный словарь каждый раз
+            genders['female'] += 1
+    return genders
 
 for clas in school:
-    print(f'Класс {clas["class"]}: девочки {gender_count(clas["students"])[1]}, мальчики {gender_count(clas["students"])[0]}')
+    print(f'Класс {clas["class"]}: девочки {gender_count(clas["students"])["female"]}, мальчики {gender_count(clas["students"])["male"]}')
 
 
 # Задание 5
@@ -127,11 +127,17 @@ is_male = {
 }
 
 count_dict = {}
+boys, girls = 0, 0
 for clas in school:
     count_dict[clas['class']] = gender_count(clas["students"])
-#здесь пожалуй воспользуюсь сортировкой
-boys = sorted(count_dict.items(), key=lambda item: item[1][0])[-1][0]
-girls = sorted(count_dict.items(), key=lambda item: item[1][1])[-1][0]
-print(f'Больше всего мальчиков в классе {boys} \nБольше всего девочек в классе {girls}')
+    if count_dict[clas['class']]['male'] > boys:
+        boys = count_dict[clas['class']]['male']
+        max_boys = clas['class']
+    if count_dict[clas['class']]['female'] > girls:
+        girls = count_dict[clas['class']]['female']
+        max_girls = clas['class']
+
+
+print(f'Больше всего мальчиков в классе {max_boys} \nБольше всего девочек в классе {max_girls}')
 
 

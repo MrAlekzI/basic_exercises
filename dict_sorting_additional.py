@@ -9,23 +9,25 @@ import string
 import random
 
 def letter_counter_dict(word): #решение 1 через словарь
-    word_list = sorted(list(word)) #переводим в стисок и сортируем чтобы при одинкаовых количесвах буквы бли в алфавитном порядке
+    #word_list = sorted(list(word)) #переводим в стисок и сортируем чтобы при одинкаовых количесвах буквы бли в алфавитном порядке
     letter_dict = {}
-    for letter in word_list: #формируем словарь через get
+    for letter in word: #формируем словарь через get
         letter_dict[letter] = letter_dict.get(letter, 0) + 1
    
-    result = dict(sorted(letter_dict.items(), key=lambda item: item[1], reverse=True)) #сортировка по убыванию value
-    for key, value in result.items():
+    result1 = sorted(letter_dict.items(), key=lambda item: item[0]) #сортировка по алфафиту после подсчета
+    result2 = sorted(result1, key=lambda item: item[1], reverse=True) #обратная сортировка по значению
+    for (key, value) in result2:
         print(key, value, end=' ')
 
 def letter_counter_dict_2(word): #решение 2 через defaultdict
-    word_list = sorted(list(word))
+    #word_list = sorted(list(word))
     letter_dict = defaultdict(lambda: 0) #задаем дефолное значения ключа
-    for letter in word_list: #формируем словарь
+    for letter in word: #формируем словарь
         letter_dict[letter] += 1
 
-    result = dict(sorted(letter_dict.items(), key=lambda item: item[1], reverse=True)) #сортировка по убыванию value
-    for key, value in result.items():
+    result1 = sorted(letter_dict.items(), key=lambda item: item[0]) #сортировка по алфафиту после подсчета
+    result2 = sorted(result1, key=lambda item: item[1], reverse=True) #обратная сортировка по значению
+    for (key, value) in result2:
         print(key, value, end=' ')
 
 def letter_counter_dict_3(word): #решение 3 через Counter
@@ -38,7 +40,8 @@ def letter_counter_dict_3(word): #решение 3 через Counter
 
 if __name__ == '__main__':
 
-    random_string = ''.join(random.choices(string.ascii_letters, k=100000))
+    random_string = 'pnbalkpanactlnca'
+    #test_string = ''.join(random.choices(string.ascii_letters, k=100000))
     print('Способ 1')
     letter_counter_dict(random_string)
     print ('\nСпособ 2')

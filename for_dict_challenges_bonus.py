@@ -66,10 +66,13 @@ def generate_chat_history():
         })
     return messages
 
-def max_count(some_dict): #здесь функция чтобы делать список элементов с максимальными значениями(на случай если не один ключ с максимальным значением)
+
+
+
+def max_count(users_dict): #здесь функция чтобы делать список элементов с максимальными значениями(на случай если не один ключ с максимальным значением)
     users = []
-    max_value = max(some_dict.values()) #ищем максимальное число сообщений
-    for (key, value) in some_dict.items(): #ищем ключт у которых одинаковое и максимальное число
+    max_value = max(users_dict.values()) #ищем максимальное число сообщений
+    for (key, value) in users_dict.items(): #ищем ключт у которых одинаковое и максимальное число
         if value == max_value:
             users.append(key)
     return " ".join(map(str, users))
@@ -96,6 +99,20 @@ def max_reply(lst): #максимально цитируемые пользоа�
     return f'Пользователь(ли) сообщения которого больше всего реплаили {result}'
 
 
+def max_reply_2(lst):
+    rewritten_list = {}
+    user_dict = {}
+    for message in lst:
+        rewritten_list[message['id']] = message #перезаписываем список в словарь
+        intial_id = message['reply_for']
+        if intial_id:
+            user = rewritten_list[intial_id]['sent_by']
+            user_dict[user] = user_dict.get(user, 0)+1
+    result = max_count(user_dict)
+    return f'Пользователь(ли) сообщения которого больше всего реплаили {result}'
+
+
+
 def max_seen(lst): #максимально просматриваемые пользователи
     user_dict = {}
     for message in lst:
@@ -115,18 +132,17 @@ def max_time(lst):
                 evening += 1
     return f'Больше всего сообщений в чате {"утром" if morning>day and morning>evening else "днем" if day>morning and day>evening else "вечером"}'
 
-count = 0
+count = {'deep':0}
 def max_tread (lst): #првоерка глубины треда c помощью рекурсии
-    global count #счетчик глобальный чтобы не обнулялся при каждном входе в рекурсию, возможно можно проще
     reply_list = []
     for message in lst:
         if message['reply_for']:
             id = message['reply_for']
             reply_list.append(id)
     if len(reply_list) == 0:
-        return f'Максимальная длина треда: {count}'
+        return f'Максимальная длина треда: {count["deep"]}'
     else:
-        count += 1
+        count['deep'] += 1
         new_lst = [message for message in lst if message['id'] in reply_list] #создаем который содержит родительские сообщения для реплаев на этом же шаге
         return max_tread(new_lst)
 
@@ -135,6 +151,7 @@ if __name__ == "__main__":
     message_list = generate_chat_history()
     print(user_of_max(message_list))
     print(max_reply(message_list))
+    print(max_reply_2(message_list))
     print(max_seen(message_list))
     print(max_time(message_list))
     print(max_tread(message_list))
